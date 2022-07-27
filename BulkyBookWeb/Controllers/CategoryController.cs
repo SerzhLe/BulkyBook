@@ -13,9 +13,9 @@ namespace BulkyBookWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _context.Categories.ToList();
+            var categories = await _context.Categories.ToListAsync();
 
             return View(categories);
         }
@@ -50,6 +50,73 @@ namespace BulkyBookWeb.Controllers
 
             return View(category);
 
+        }
+
+        //GET
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            var category = await _context.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Category category)
+        {
+            if (category.Name == category.DisplayOrder.ToString())
+            {
+                //custom error message
+                ModelState.AddModelError("name", "Category name cannot be the same as DisplayOrder");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Categories.Update(category);
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(category);
+
+        }
+
+        //POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id <= 0)
+            {
+                return NotFound();
+            }
+
+            var category = _context.Categories.Find(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            _context.Categories.Remove(category);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

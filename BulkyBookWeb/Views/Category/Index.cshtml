@@ -24,6 +24,7 @@
             <td>Category Name</td>
             <td>Display Order</td>
             <td>Created at</td>
+            <td>Action</td>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +34,17 @@
                 <td>@category.Name</td>
                 <td>@category.DisplayOrder</td>
                 <td>@category.Created</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
+                            <i class="bi bi-pencil-square"></i>
+                            Edit
+                        </a>
+                        <form method="post">
+                            <button class="btn btn-primary" asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id">Delete</button>
+                        </form>
+                    </div>
+                </td>
             </tr>
         }
     </tbody>
