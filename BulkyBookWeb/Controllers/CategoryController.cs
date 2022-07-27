@@ -98,14 +98,14 @@ namespace BulkyBookWeb.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id <= 0)
             {
                 return NotFound();
             }
 
-            var category = _context.Categories.Find(id);
+            var category = await _context.Categories.FindAsync(id);
 
             if (category == null)
             {
