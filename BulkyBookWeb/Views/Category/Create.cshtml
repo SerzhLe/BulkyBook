@@ -1,0 +1,31 @@
+﻿@model Category
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-md-2">
+            <h2 class="text-primary">Create category</h2>
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control"/>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DisplayOrder"></label>
+            <input asp-for="DisplayOrder" class="form-control"/>
+            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-controller="Category" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+<!-- In _Layout viw we have RenderSection with name "Scripts" - in this view we specidy this scripts and they will be rendered ONLY 
+when this view will be rendered. Because RenderSection has parameter "required" false - we do not need to specify in each view this Scripts section
+-->
+
+<!-- Client side validation - we get partial view --> 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml"></partial>
+}

@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Category";
+}
+
+@model List<Category>
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Category List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> &nbsp;
+            Create New Category
+            </a>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr class="table-primary">
+            <td>Category Name</td>
+            <td>Display Order</td>
+            <td>Created at</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Name</td>
+                <td>@category.DisplayOrder</td>
+                <td>@category.Created</td>
+            </tr>
+        }
+    </tbody>
+</table>
