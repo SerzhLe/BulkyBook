@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BulkyBookWeb.Migrations
+namespace BulkyBookDataAccess.Migrations
 {
     public partial class AddDisplayOrderColumnToCategoryTable : Migration
     {

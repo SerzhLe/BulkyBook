@@ -1,5 +1,7 @@
-﻿using BulkyBookWeb.Models;
+﻿using BulkyBookDataAccess.Data;
+using BulkyBookModels.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBookWeb.Controllers
 {
@@ -35,7 +37,7 @@ namespace BulkyBookWeb.Controllers
             if (category.Name == category.DisplayOrder.ToString())
             {
                 //custom error message
-                ModelState.AddModelError("name", "Category name cannot be the same as DisplayOrder");
+                ModelState.AddModelError("name", "Category name cannot be the same as Display Order");
                 //we add key the same as the property of model - that way allows to show this message under Name input
             }
 
