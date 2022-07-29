@@ -21,10 +21,10 @@
 <table class="table">
     <thead>
         <tr class="table-primary">
-            <td>Category Name</td>
-            <td>Display Order</td>
-            <td>Created at</td>
-            <td>Action</td>
+            <td width="25%">Category Name</td>
+            <td width="25%">Display Order</td>
+            <td width="25%">Created at</td>
+            <td width="25%">Action</td>
         </tr>
     </thead>
     <tbody>
@@ -36,12 +36,14 @@
                 <td>@category.Created</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
-                            <i class="bi bi-pencil-square"></i>
-                            Edit
-                        </a>
-                        <form method="post">
-                            <button class="btn btn-primary" asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id">Delete</button>
+                        <button class="btn btn-primary">
+                            <a class="button-link" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
+                        </button>
+                        <form method="post" class="ms-2">
+                            <button class="btn btn-danger" asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id">Delete</button>
                         </form>
                     </div>
                 </td>

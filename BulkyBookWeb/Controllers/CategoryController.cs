@@ -30,7 +30,7 @@ namespace BulkyBookWeb.Controllers
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (category.Name == category.DisplayOrder.ToString())
             {
@@ -39,24 +39,30 @@ namespace BulkyBookWeb.Controllers
                 //we add key the same as the property of model - that way allows to show this message under Name input
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Categories.Add(category);
-
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
+                return View(category);
             }
 
-            return View(category);
+            _context.Categories.Add(category);
 
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                return BadRequest("Failed to create the category. Please, try again");
+            }
+
+            //used to store data within one request to another - ideal for notifications
+            //if you apply another request or refresh the page - it will go away
+            TempData["success"] = "Category created successfully";
+
+            return RedirectToAction("Index");
         }
 
         //GET
         [HttpGet]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || id <= 0)
+            if (id <= 0)
             {
                 return NotFound();
             }
@@ -82,25 +88,29 @@ namespace BulkyBookWeb.Controllers
                 ModelState.AddModelError("name", "Category name cannot be the same as DisplayOrder");
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Categories.Update(category);
-
-                _context.SaveChanges();
-
-                return RedirectToAction("Index");
+                return View(category);
             }
 
-            return View(category);
+            _context.Categories.Update(category);
 
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                return BadRequest("Failed to update the category. Please, try again");
+            }
+
+            TempData["success"] = "Category updated successfully";
+
+            return RedirectToAction("Index");
         }
 
         //POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || id <= 0)
+            if (id <= 0)
             {
                 return NotFound();
             }
@@ -114,7 +124,12 @@ namespace BulkyBookWeb.Controllers
 
             _context.Categories.Remove(category);
 
-            _context.SaveChanges();
+            if (await _context.SaveChangesAsync() <= 0)
+            {
+                return BadRequest("Failed to delete the category. Please, try again.");
+            }
+
+            TempData["success"] = "Category deleted successfully";
 
             return RedirectToAction("Index");
         }
