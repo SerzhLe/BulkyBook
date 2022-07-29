@@ -20,3 +20,12 @@ body {
 .button-link {
     text-decoration: none;
 }
+
+.footer-bottom {
+    position: fixed;
+    bottom: 0;
+    background: var(--bs-primary);
+    width: 100%;
+    height: 50px;
+    text-align: end;
+}
