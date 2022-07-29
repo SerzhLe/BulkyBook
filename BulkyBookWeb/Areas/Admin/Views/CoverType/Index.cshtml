@@ -1,0 +1,54 @@
+﻿@model IEnumerable<CoverType>
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Cover Type List</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="CoverType" asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> &nbsp;
+            Create New Cover Type
+            </a>
+        </div>
+    </div>
+</div>
+
+@if (!Model.Any())
+{
+    <h3>No Cover Types yet</h3>
+}
+
+else
+{
+    <table class="table small-table">
+        <thead>
+            <tr class="table-primary">
+                <td width="50%">Cover Type Name</td>
+                <td width="50%">Action</td>
+            </tr>
+        </thead>
+        <tbody> 
+            @foreach (var coverType in Model)
+            {
+                <tr>
+                    <td>@coverType.Name</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-primary">
+                                <a class="button-link" asp-controller="CoverType" asp-action="Edit" asp-route-id="@coverType.Id">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
+                                </a>
+                            </button>
+                            <form method="post" class="ms-2">
+                                <button class="btn btn-danger" asp-controller="CoverType" asp-action="Delete" asp-route-id="@coverType.Id">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

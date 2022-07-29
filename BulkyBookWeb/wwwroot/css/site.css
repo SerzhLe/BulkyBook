@@ -29,3 +29,8 @@ body {
     height: 50px;
     text-align: end;
 }
+
+.small-table {
+    width: 70vw;
+    margin: auto;
+}
