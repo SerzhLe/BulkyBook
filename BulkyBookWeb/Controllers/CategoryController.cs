@@ -1,23 +1,22 @@
-﻿using BulkyBookDataAccess.Data;
+﻿using BulkyBookDataAccess.Repository.IRepository;
 using BulkyBookModels.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBookWeb.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _uow;
 
-        public CategoryController(ApplicationDbContext context)
+        public CategoryController(IUnitOfWork uow)
         {
-            _context = context;
+            _uow = uow;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _uow.CategoryRepository.GetAll();
 
             return View(categories);
         }
@@ -46,9 +45,9 @@ namespace BulkyBookWeb.Controllers
                 return View(category);
             }
 
-            _context.Categories.Add(category);
+            _uow.CategoryRepository.Create(category);
 
-            if (await _context.SaveChangesAsync() <= 0)
+            if (!await _uow.CompleteAsync())
             {
                 return BadRequest("Failed to create the category. Please, try again");
             }
@@ -69,7 +68,7 @@ namespace BulkyBookWeb.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _uow.CategoryRepository.GetSingleOrDefault(c => c.Id == id);
 
             if (category == null)
             {
@@ -95,9 +94,9 @@ namespace BulkyBookWeb.Controllers
                 return View(category);
             }
 
-            _context.Categories.Update(category);
+            _uow.CategoryRepository.Update(category);
 
-            if (await _context.SaveChangesAsync() <= 0)
+            if (!await _uow.CompleteAsync())
             {
                 return BadRequest("Failed to update the category. Please, try again");
             }
@@ -117,16 +116,16 @@ namespace BulkyBookWeb.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _uow.CategoryRepository.GetSingleOrDefault(c => c.Id == id);
 
             if (category == null)
             {
                 return NotFound();
             }
 
-            _context.Categories.Remove(category);
+            _uow.CategoryRepository.Delete(category);
 
-            if (await _context.SaveChangesAsync() <= 0)
+            if (!await _uow.CompleteAsync())
             {
                 return BadRequest("Failed to delete the category. Please, try again.");
             }
